@@ -22,14 +22,16 @@ class Row {
         const children = [];
         const data = vnode.attrs.json;
         const key = vnode.attrs.key;
-        if (data !== null && typeof data === 'object') {
+        const dataType = typeof data;
+        const dataIsArray = Array.isArray(data);
+        if (data !== null && dataType === 'object') {
             children.push(m('a.toggler-link', [
                 m('span.toggler'),
-                getKey(key !== undefined ? key : ''),
+                getKey(key !== undefined && key),
                 m('span.value', [
                     m('span', [
-                        m('span.constructor-name', `${Array.isArray(data) ? 'Array' : 'Object'}`),
-                        Array.isArray(data) ?
+                        m('span.constructor-name', `${dataIsArray ? 'Array' : 'Object'}`),
+                        dataIsArray ?
                             m('span', [
                                 m('span.bracket', '['),
                                 m('span.number', `${data.length}`),
@@ -38,17 +40,17 @@ class Row {
                     ])
                 ])
             ]));
-            const className = `.children.object${Array.isArray(data) ? '.array' : ''}`;
+            const className = `.children.object${dataIsArray && '.array'}`;
             const rows = getRows({json: data, open: vnode.attrs.open - 1});
             this.isOpen ? children.push(m(className), rows) : null;
         } else {
             children.push(m('span', [
-                getKey(`${key !== undefined ? key : typeof data}: `),
-                m(`span.${data === null ? 'null' : typeof data}`, `${typeof data === 'string' ? `"${data}"` : data}`)
+                getKey(`${key !== undefined ? key : dataType}: `),
+                m(`span.${data === null ? 'null' : dataType}`, `${dataType === 'string' ? `"${data}"` : data}`)
             ]));
         }
 
-        return m(`div.row.dark${this.isOpen ? ' open' : ''}`, {onclick: this.onclick}, children);
+        return m(`div.row.dark${this.isOpen && ' open'}`, {onclick: this.onclick}, children);
     }
 
     onclick(e) {
