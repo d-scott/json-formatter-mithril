@@ -15,7 +15,7 @@ const config = {
 class Root {
     view() {
         return m('.root', [
-            m('.panel', [
+            m(`.panel ${config.theme}`, [
                 m('.title', 'Giant JSON: '),
                 m(JSONFormatter, {json: json, open: Infinity, config: config})
             ])
