@@ -3,8 +3,7 @@ import Key from './Key';
 
 export default class Toggler {
     view(vnode) {
-        const key = vnode.attrs.key;
-        const data = vnode.attrs.data;
+        const {key, data, config} = vnode.attrs;
         const dataIsArray = Array.isArray(data);
         return m('a.toggler-link', [
             m('span.toggler'),
@@ -20,7 +19,7 @@ export default class Toggler {
                         ]) : null
                 ])
             ]),
-            this.getPreview(vnode.attrs.config, data, dataIsArray)
+            this.getPreview(config, data, dataIsArray)
         ]);
     }
 

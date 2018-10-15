@@ -17,7 +17,7 @@ class Root {
         return m('.root', [
             m(`.panel ${config.theme}`, [
                 m('.title', 'Giant JSON: '),
-                m(JSONFormatter, {json: json, open: Infinity, config: config})
+                m(JSONFormatter, {data: json, open: 3, config: config})
             ])
         ]);
     }

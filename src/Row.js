@@ -15,16 +15,15 @@ export default class Row {
 
     view(vnode) {
         const children = [];
-        const data = vnode.attrs.json;
-        const key = vnode.attrs.key;
+        const {data, key, config, open} = vnode.attrs;
         const dataType = typeof data;
         const dataIsArray = Array.isArray(data);
         if (data !== null && dataType === 'object') {
-            children.push(m(Toggler, {key, data, config: vnode.attrs.config}));
+            children.push(m(Toggler, {key, data, config}));
 
             if (this.isOpen) {
                 const className = `.children.object${dataIsArray ? '.array' : ''}`;
-                const rows = m(Rows, {json: data, open: vnode.attrs.open - 1, config: vnode.attrs.config});
+                const rows = m(Rows, {data, open: open - 1, config});
                 children.push(m(className), rows);
             }
         } else {
@@ -34,8 +33,7 @@ export default class Row {
             ]));
         }
 
-        const theme = vnode.attrs.config.theme;
-        return m(`div.row${'.' + theme}${this.isOpen && ' open'}`, {onclick: this.onclick}, children);
+        return m(`div.row${'.' + config.theme}${this.isOpen ? ' open' : ''}`, {onclick: this.onclick}, children);
     }
 
     onclick(e) {

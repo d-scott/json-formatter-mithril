@@ -3,14 +3,14 @@ import Row from './Row';
 
 export default class Rows {
     view(vnode) {
-        const {json, open, config} = vnode.attrs;
-        if (Array.isArray(json)) {
-            return json.map((obj, index) => {
-                return m(Row, {json: obj, key: index, open, config});
+        const {data} = vnode.attrs;
+        if (Array.isArray(data)) {
+            return data.map((obj, index) => {
+                return m(Row, {...vnode.attrs, data: obj, key: index});
             });
         } else {
-            return Object.keys(json).map(key => {
-                return m(Row, {json: json[key], open, key, config});
+            return Object.keys(data).map(key => {
+                return m(Row, {...vnode.attrs, data: data[key], key});
             });
         }
     }
